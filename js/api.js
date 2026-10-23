@@ -1,7 +1,6 @@
 // ─── API Configuration ────────────────────────────────────────────────────────
 // When deployed to Vercel/Netlify, replace LIVE_BACKEND_URL with your live Render/Vercel URL
-// (e.g. 'https://note-taking-backend.onrender.com/api')
-const LIVE_BACKEND_URL = '';
+const LIVE_BACKEND_URL = 'https://note-taking-application-backend-seven.vercel.app/api';
 
 const isLocalhost = window.location.hostname === 'localhost' ||
                     window.location.hostname === '127.0.0.1' ||
