@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — NoteApp</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">📝 NoteApp</div>
+    <div class="nav-right">
+      <span id="nav-username" class="nav-user"></span>
+      <a id="admin-panel-link" href="admin.html" class="btn btn-ghost btn-sm hidden">Admin Panel</a>
+      <a href="posts.html" class="btn btn-ghost btn-sm">Public Posts</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Notes Section -->
+    <div class="section-header">
+      <h2>My Notes</h2>
+      <button id="new-note-btn" class="btn btn-primary btn-sm">+ New Note</button>
+    </div>
+
+    <!-- Note Form (hidden by default) -->
+    <div id="note-form-card" class="card hidden">
+      <h3 id="form-title">New Note</h3>
+      <div id="form-error" class="alert alert-error hidden"></div>
+      <div class="form-group">
+        <label for="note-title">Title</label>
+        <input type="text" id="note-title" placeholder="Note title..." />
+      </div>
+      <div class="form-group">
+        <label for="note-content">Content</label>
+        <textarea id="note-content" rows="5" placeholder="Write your note here..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button id="save-note-btn" class="btn btn-primary">Save Note</button>
+        <button id="cancel-note-btn" class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Pagination + Notes list -->
+    <div id="notes-loading" class="loading-text">Loading notes...</div>
+    <div id="notes-empty" class="empty-state hidden">
+      <p>📭 No notes yet. Create your first one!</p>
+    </div>
+    <div id="notes-list" class="notes-grid hidden"></div>
+    <div id="notes-pagination" class="pagination hidden"></div>
+
+    <!-- Public Posts Section -->
+    <div class="section-header" style="margin-top:2.5rem;">
+      <h2>My Posts</h2>
+      <button id="new-post-btn" class="btn btn-primary btn-sm">+ New Post</button>
+    </div>
+
+    <div id="post-form-card" class="card hidden">
+      <h3>New Post</h3>
+      <div id="post-form-error" class="alert alert-error hidden"></div>
+      <div class="form-group">
+        <label for="post-title">Title</label>
+        <input type="text" id="post-title" placeholder="Post title..." />
+      </div>
+      <div class="form-group">
+        <label for="post-body">Body</label>
+        <textarea id="post-body" rows="4" placeholder="Write your post..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button id="save-post-btn" class="btn btn-primary">Publish</button>
+        <button id="cancel-post-btn" class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+
+    <div id="my-posts-loading" class="loading-text">Loading posts...</div>
+    <div id="my-posts-empty" class="empty-state hidden"><p>No posts yet.</p></div>
+    <div id="my-posts-list" class="notes-grid hidden"></div>
+    <div id="my-posts-pagination" class="pagination hidden"></div>
+
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

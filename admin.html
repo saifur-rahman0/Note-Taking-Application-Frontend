@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — NoteApp</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">📝 NoteApp <span class="badge-admin">ADMIN</span></div>
+    <div class="nav-right">
+      <span id="nav-username" class="nav-user"></span>
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">My Notes</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Tabs -->
+  <div class="container">
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="users">Users</button>
+      <button class="tab-btn" data-tab="notes">All Notes</button>
+      <button class="tab-btn" data-tab="interests">Group by Interests</button>
+      <button class="tab-btn" data-tab="user-posts">User Posts ($lookup)</button>
+    </div>
+
+    <!--   TAB: Users -->
+    <div id="tab-users" class="tab-content active">
+      <div class="section-header">
+        <h2>Manage Users</h2>
+        <button id="add-user-btn" class="btn btn-primary btn-sm">+ Add User</button>
+      </div>
+
+      <div id="user-form-card" class="card hidden">
+        <h3 id="user-form-title">Add User</h3>
+        <div id="user-form-error" class="alert alert-error hidden"></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="u-name">Name</label>
+            <input type="text" id="u-name" placeholder="Full name" />
+          </div>
+          <div class="form-group">
+            <label for="u-email">Email</label>
+            <input type="email" id="u-email" placeholder="email@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="u-password">Password <span class="label-hint">(leave blank to keep)</span></label>
+            <input type="password" id="u-password" placeholder="••••••••" />
+          </div>
+          <div class="form-group">
+            <label for="u-role">Role</label>
+            <select id="u-role">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group form-full">
+            <label for="u-interests">Interests <span class="label-hint">(comma-separated)</span></label>
+            <input type="text" id="u-interests" placeholder="chess, reading, coding" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button id="save-user-btn" class="btn btn-primary">Save</button>
+          <button id="cancel-user-btn" class="btn btn-ghost">Cancel</button>
+        </div>
+      </div>
+
+      <div id="users-loading" class="loading-text">Loading users...</div>
+      <div id="users-empty" class="empty-state hidden">
+        <p>No users found.</p>
+      </div>
+      <div id="users-table-wrap" class="table-wrap hidden">
+        <table id="users-table" class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Interests</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+      <div id="users-pagination" class="pagination hidden"></div>
+    </div>
+
+    <!--   TAB: All Notes                            -->
+    <div id="tab-notes" class="tab-content">
+      <div class="section-header">
+        <h2>All Notes</h2>
+      </div>
+      <div id="all-notes-loading" class="loading-text">Loading notes...</div>
+      <div id="all-notes-empty" class="empty-state hidden">
+        <p>No notes yet.</p>
+      </div>
+      <div id="all-notes-table-wrap" class="table-wrap hidden">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Content</th>
+              <th>Owner</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="all-notes-tbody"></tbody>
+        </table>
+      </div>
+      <div id="all-notes-pagination" class="pagination hidden"></div>
+    </div>
+
+    <!--   TAB: Group by Interests (Aggregation 1)               -->
+    <div id="tab-interests" class="tab-content">
+      <div class="section-header">
+        <div>
+          <h2>Users Grouped by Interests</h2>
+          <p style="font-size:0.85rem;color:var(--text2);margin-top:0.25rem;">
+            Real-time aggregation pipeline grouping users by shared interests.
+          </p>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <button id="refresh-interests-btn" class="btn btn-ghost btn-sm">Refresh</button>
+          <span class="badge-agg">Aggregation Pipeline</span>
+        </div>
+      </div>
+
+      <!-- Interactive Toolbar -->
+      <div class="interests-toolbar">
+        <div class="interests-search-wrap">
+          <input type="text" id="interests-filter-input"
+            placeholder="Search interests or users (e.g. chess, Alice)..." />
+        </div>
+        <div id="interests-tag-pills" class="interests-tag-pills"></div>
+      </div>
+
+      <div id="interests-loading" class="loading-text">Loading aggregation data...</div>
+      <div id="interests-empty" class="empty-state hidden">
+        <p>No interest data found.</p>
+      </div>
+      <div id="interests-list" class="interests-grid hidden"></div>
+    </div>
+
+    <!--   TAB: User Posts via $lookup (Aggregation 2)             -->
+    <div id="tab-user-posts" class="tab-content">
+      <div class="section-header">
+        <h2>User Posts via $lookup</h2>
+        <span class="badge-agg">$lookup Aggregation</span>
+      </div>
+      <div class="lookup-search">
+        <select id="lookup-user-select">
+          <option value="">-- Choose User from List --</option>
+        </select>
+        <span class="lookup-divider">OR</span>
+        <input type="text" id="lookup-user-id" placeholder="Enter User ID or Email (e.g. eva@example.com)..." />
+        <button id="lookup-btn" class="btn btn-primary">Fetch Posts</button>
+      </div>
+      <div id="lookup-loading" class="loading-text hidden">Running $lookup pipeline...</div>
+      <div id="lookup-error" class="alert alert-error hidden"></div>
+      <div id="lookup-result" class="hidden">
+        <div id="lookup-user-info" class="card lookup-user-card"></div>
+        <div id="lookup-posts-list" class="notes-grid" style="margin-top:1rem;"></div>
+        <div id="lookup-pagination" class="pagination"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+
+</html>

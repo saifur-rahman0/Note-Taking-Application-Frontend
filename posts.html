@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Public Posts — NoteApp</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">📝 NoteApp</div>
+    <div class="nav-right">
+      <a id="dashboard-link" href="dashboard.html" class="btn btn-ghost btn-sm hidden">My Dashboard</a>
+      <a id="admin-link" href="admin.html" class="btn btn-ghost btn-sm hidden">Admin Panel</a>
+      <a id="login-link" href="login.html" class="btn btn-primary btn-sm">Login</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm hidden">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="section-header">
+      <h2>Public Posts</h2>
+    </div>
+    <div id="posts-loading" class="loading-text">Loading posts...</div>
+    <div id="posts-empty" class="empty-state hidden"><p>No posts yet.</p></div>
+    <div id="posts-list" class="notes-grid hidden"></div>
+    <div id="posts-pagination" class="pagination hidden"></div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/posts.js"></script>
+</body>
+</html>
